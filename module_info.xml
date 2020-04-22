@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+    
+    <!--
+    ##################
+    Required cron job:
+    ##################
+    
+    # m   h dom mon dow command
+      */5 * *   *   *   php -q public_html/news_miniwall/cli_monitor.php >> public_html/logs/news_miniwall_fetcher-$(date +\%Y\%m\%d).log 2>&1
+    -->
+    
+    <version>1.0.0</version>
+    <group>modules_misc</group>
+    <admin_only>false</admin_only>
+    
+    <working_flags>
+        <install>true</install>
+        <uninstall>true</uninstall>
+        <enable>true</enable>
+        <disable>true</disable>
+    </working_flags>
+    
+    <template_includes>
+        <post_footer>onscreen_widget.inc</post_footer>
+    </template_includes>
+    
+    <extends_to>
+        <settings>
+            <specs_renderer>
+                <preinits>extenders/settings_preinits.inc</preinits>
+                <news_miniwall_control>extenders/settings_control.inc</news_miniwall_control>
+            </specs_renderer>
+        </settings>
+    </extends_to>
+</module>

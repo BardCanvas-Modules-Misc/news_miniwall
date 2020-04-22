@@ -1,0 +1,96 @@
+/**
+ * News Miniwall styles
+ *
+ * @package    BardCanvas
+ * @subpackage News Miniwall
+ * @author     Alejandro Caballero - lava.caballero@gmail.com
+ */
+
+#news_miniwall_widget_container {
+    position: fixed;
+    background-color: white;
+    box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 1);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    
+    font-family: arial, helvetica, sans-serif;
+    font-size: 9pt; line-height: normal;
+}
+
+#news_miniwall_widget_container .title {
+    height: 32px; font-size: 16px; line-height: 32px;
+    padding: 0 10px 0 5px;
+    color: white;
+    background-color: #23282D;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#news_miniwall_widget_container .title .caption {
+    display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+#news_miniwall_widget_container .title .count {
+    display: inline-block;
+    font-size: 8pt; font-weight: bold; line-height: 9pt;
+    text-align: center; vertical-align: middle; margin-top: -1px;
+    width: 20px; padding: 1px; margin-left: 5px;
+    color: white; background-color: red;
+    border-radius: 3px;
+}
+
+/*body[data-is-known-user="false"] #news_miniwall_widget_container .title .count { display: none; }*/
+
+#news_miniwall_widget_container           .title .nwm_widget_toggle { }
+#news_miniwall_widget_container.collapsed .title                    { border-top-left-radius: 5px;
+                                                                      border-top-right-radius: 5px; }
+#news_miniwall_widget_container           .title .widget_collapsed  { display: none; }
+#news_miniwall_widget_container.collapsed .title .widget_collapsed  { display: inline-block; }
+#news_miniwall_widget_container.collapsed .title .widget_expanded   { display: none; }
+
+#news_miniwall_widget_container.collapsed .items { display: none; }
+#news_miniwall_widget_container           .items { max-height: 50vh; overflow: auto; }
+
+@media all and (max-width: 400px )
+{
+    #news_miniwall_widget_container.collapsed .title .caption { max-width: 110px; }
+}
+
+.news_miniwall_widget_item                 { display: block; position: relative; white-space: nowrap;
+                                             padding: 5px; border-bottom: 2px solid silver;
+                                             width: calc(100vw - 40px); max-width: 300px; }
+.news_miniwall_widget_item:last-child      { border-bottom: none; }
+.news_miniwall_widget_item .closer         { position: absolute; top: 2px; right: 2px; }
+.news_miniwall_widget_item .left           { display: inline-block; width: 50px; vertical-align: top; }
+.news_miniwall_widget_item .left .icon     { width: 45px; vertical-align: top; }
+.news_miniwall_widget_item .right          { display: inline-block; width: calc(100% - 50px);
+                                             white-space: normal; vertical-align: top; padding-right: 5px; }
+.news_miniwall_widget_item .source_name    { font-weight: bold; }
+.news_miniwall_widget_item .item_title     { font-size: 11pt; margin: 5px 0; }
+.news_miniwall_widget_item .item_thumbnail { width: 100%; margin-top: 5px; }
+
+.news_miniwall_widget_item.read            { background-color: rgba(192, 192, 192, 0.5); }
+.news_miniwall_widget_item.read .closer    { display: none; }
+body[data-is-known-user="true"] .news_miniwall_widget_item.read { display: none; }
+
+.news_miniwall_widget_item .closer       .hover  { display: none; }
+.news_miniwall_widget_item .closer:hover .normal { display: none; }
+.news_miniwall_widget_item .closer:hover .hover  { display: inline-block; }
+
+#news_miniwall_widget_container .footing {
+    font-size: 10pt;
+    color: white;
+    background-color: #23282D;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#news_miniwall_widget_container .footing .pseudo_link {
+    display: inline-block; font-size: 10pt; color: white; text-decoration: none; padding: 5px;
+}
+
+#news_miniwall_widget_container.collapsed .footing { display: none; }

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+    
+    <display_name>News miniwall</display_name>
+    <icon>fa-rss-square</icon>
+    <description>
+        Provides a small widget that appears at the bottom of the screen and shows
+        articles from RSS sources as soon as they're published.
+    </description>
+    
+    <add_new_source>Add new source</add_new_source>
+    <set>Set...</set>
+    <remove>Remove</remove>
+    
+    <form_fields>
+        <title>
+            <caption>Title:</caption>
+            <placeholder>Type a title for the source</placeholder>
+        </title>
+        <url>
+            <caption>URL:</caption>
+        </url>
+        <icon>
+            <caption>Icon:</caption>
+        </icon>
+    </form_fields>
+    
+    <widget>
+        <title>Global news feed</title>
+        <mark_all>Mark all read</mark_all>
+    </widget>
+    
+    <messages>
+        <invalid_item_id>Invalid item id provided</invalid_item_id>
+        <remote>
+            <error_connecting>Error connecting to %s: %s.</error_connecting>
+            <empty_response>Error marking item on %s: empty response.</empty_response>
+            <invalid_response>Invalid API response from %s: not a JSON object.</invalid_response>
+            <error_received>Error received from %s: %s.</error_received>
+        </remote>
+        <calls>
+            <not_allowed>Method not allowed for current configuration.</not_allowed>
+            <not_for_locals>Method is not allowed for local accounts.</not_for_locals>
+            <service_disabled>Remote Miniwall service is disabled.</service_disabled>
+            <no_account>No account id provided.</no_account>
+            <invalid_account>The provided account id is invalid.</invalid_account>
+            <account_not_found>The provided account wasn't found on this server.</account_not_found>
+            <item_not_found>The provided item wasn't found on this server.</item_not_found>
+            <host_missing>Host parameter missing.</host_missing>
+            <passphrase_missing>Passphrase missing.</passphrase_missing>
+            <host_not_found>The calling host wasn't found on this server.</host_not_found>
+            <passphrase_mismatch>The provided passphrase doesn't match with the registered for this client.</passphrase_mismatch>
+            <invalid_timestamp>Invalid starting timestamp provided.</invalid_timestamp>
+        </calls>
+    </messages>
+    
+    <error_notification><![CDATA[
+        Warning: cannot fetch feed "{$name}": it is malformed!
+        Please check the source manually and disable it
+        until the issue is resolved.
+    ]]></error_notification>
+    
+    <settings_data>
+        <title>News miniwall</title>
+        
+        <specs key="widget_title">
+            <title>Widget title</title>
+            <description><![CDATA[
+                Type a title for the widget.
+                If none defined, a default title will be shown.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        
+        <!--
+        Value format:
+        ┌─────────────────────────────────┐
+        │ title → url → icon_path → state │
+        └─────────────────────────────────┘
+        -->
+        <specs key="rss_sources">
+            <title>RSS sources</title>
+            <description><![CDATA[
+                Use the controls here to define your RSS sources.
+            ]]></description>
+            <type>@news_miniwall:specs_renderer/news_miniwall_control</type>
+        </specs>
+        
+        <specs key="last_pull_times" highlight_class="sensitive">
+            <title><![CDATA[ <i class="fa fa-warning"></i> Last pull times ]]></title>
+            <description><![CDATA[
+                This variable keeps the timestamps of last feed pulls.
+                Do not edit it unless strictly necessary!
+            ]]></description>
+            <type>code</type>
+        </specs>
+        
+        <specs is_separator="true">Hub settings</specs>
+        
+        <specs key="serve_to_rauth_clients" required_modules="rauth_server">
+            <title>Serve to Remote Auth Clients?</title>
+            <description><![CDATA[
+                <span class="greengo">The Remote Auth Server module is present on this system.</span>
+                You can allow clients to access your miniwall remotely.
+                <span class="pseudo_link"
+                      title="Toggle full information"
+                      onclick="toggle_info_section('news_miniwall_rauths_info')"><i
+                      class="fa fa-info-circle"></i> Details</span>
+                
+                <div id="news_miniwall_rauths_info" class="info_handler" style="display: none">
+                    <br>
+                    If you want the clients of this system to show the feeds widget served from this
+                    website, yo need to:
+                    <ol>
+                        <li>
+                            Enable this setting and save changes.
+                        </li>
+                        <li>
+                            Install the News Miniwall module on each client, then
+                        </li>
+                        <li>
+                            Edit the module settings on each client and, instead of specifying
+                            sources, enable the client mode.
+                        </li>
+                    </ol>
+                    Tracking of read flags for registered users will be possible since
+                    user databases will be synchronized in both server and client.
+                </div>
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
+        
+        <specs key="read_from_rauth_server" required_modules="rauth_client">
+            <title>Act as client of the Remote Auth server?</title>
+            <description><![CDATA[
+                <span class="greengo">The Remote Auth Client module is present on this system.</span>
+                If the server has the News Miniwall module installed and running, you can fetch it remotely.
+                <span class="pseudo_link"
+                      title="Toggle full information"
+                      onclick="toggle_info_section('news_miniwall_rauthc_info')"><i
+                      class="fa fa-info-circle"></i> Details</span>
+                
+                <div id="news_miniwall_rauthc_info" class="info_handler" style="display: none">
+                    <br>
+                    If you want this website to fetch the news miniwall from the Remote Auth server,
+                    you'll need to ask for them to allow it, then enable this setting.
+                    <br><br>
+                    <span class="critical">
+                        <i class="fa fa-warning"></i> <b>Warning:</b> leave this setting disabled
+                        if you're going to set your own RSS sources.
+                    </span>
+                </div>
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
+        
+        <specs key="read_from_server">
+            <title>Read from remote server</title>
+            <description><![CDATA[
+                
+                If, instead of setting your own RSS sources or import a Remote Auth Server miniwall,
+                you want to show the miniwall of another website, ask them to give you a passphrase
+                and specify it here using the next syntax:
+                
+                <pre>https://domain.com - passphrase</pre>
+                
+                <span class="critical">
+                    <i class="fa fa-warning"></i> <b>Warning:</b>
+                    do not use this setting if you've defined RSS sources to pull or you're
+                    using any Remothe Auth server/client configuration.
+                </span>
+            ]]></description>
+            <type>text</type>
+        </specs>
+        
+        <!--
+        Value format:
+        ┌───────────────────────┐
+        │ hostname - passphrase │
+        └───────────────────────┘
+        -->
+        <specs key="third_party_clients">
+            <title>Allowed third party clients</title>
+            <description><![CDATA[
+                If you want third party websites to access your miniwall widget,
+                you can specify the list here.
+                <span class="pseudo_link"
+                      title="Toggle full information"
+                      onclick="toggle_info_section('news_miniwall_tpc_info')"><i
+                      class="fa fa-info-circle"></i> Details</span>
+                
+                <div id="news_miniwall_tpc_info" class="info_handler" style="display: none">
+                    <br>
+                    <span class="critical">
+                        <i class="fa fa-warning"></i> <b>Warning:</b> do not use this setting
+                        unless you define RSS sources to pull. If you set your website
+                        as client from an external miniwall source,
+                        the widget wont work on any clients you define here. 
+                    </span><br><br>
+                    
+                    Third party websites can install the News Miniwall module and set it
+                    as client of your miniwall feed. In order to accomplish this,
+                    you need to set a passphrase (a string with random letters/numbers)
+                    to each client website, one per line, using the next syntax:
+                    <pre>hostname - passphrase</pre>
+                    Examples:
+                    <pre>bardcanvas.com            - X66fy5L9SZAUQH9a
+subspace.club             - eQM6GRWVnAkGtdPt
+spaceescalator.club       - gDAX7DvTDy6LUNmU
+
+# For subdomains, the domain goes at the end: 
+subdomain1.somedomain.com - aQkMP3my8uX68dhE
+subdomain2.somedomain.com - k9fTBXgsahneYsX5
+somedomain.com            - AbPtzTL7UjTxzzT2</pre>
+                    <b>Notes:</b>
+                    <ul>
+                        <li>
+                            The widget will pull the feed in remote guest mode.
+                            Read flags tracking will not take place.
+                        </li>
+                        <li>
+                            Hostname comparison will be made in the same order hosts
+                            are specified. If you plan to allow access to subdomains,
+                            you must put subdomains <b>before</b> the domain
+                            as shown in the example above.
+                        </li>
+                        <li>
+                            You'll need to tell the clients to install the News Miniwall
+                            module and configure it as client on the settings page,
+                            specifying the URL of your website and the passphrase.
+                        </li>
+                        <li>
+                            To disable access to a host or add comments, each line
+                            must start with a <code>#</code> character.
+                        </li>
+                        <li>
+                            Any disabled host will be managed silently on the client side.
+                        </li>
+                    </ul>
+                </div>
+            ]]></description>
+            <type>code</type>
+        </specs>
+        
+    </settings_data>
+    
+</language>
