@@ -100,13 +100,25 @@ function render_news_miniwall_items(items)
         if( item.source_icon     === '' ) $forged_item.find('.left').remove();
         if( item.source_name     === '' ) $forged_item.find('.source_name').remove();
         if( item.item_image_path === '' ) $forged_item.find('.item_thumbnail').remove();
-    
+        
+        var increase_count = true;
         if( $_CURRENT_USER_ID_ACCOUNT === "" || nvm_is_3p_client )
+        {
             if( $.cookie("nmw_item_read_" + item_id) )
+            {
                 $forged_item.toggleClass('read', true);
+                increase_count = false;
+            }
+        }
+        else if( $_CURRENT_USER_ID_ACCOUNT !== "" && $.cookie("nmw_item_read_" + item_id) )
+        {
+            // Case for local accounts on remote auth support
+            $forged_item.toggleClass('read', true);
+            increase_count = false;
+        }
         
         $target.prepend($forged_item);
-        items_rendered++;
+        if( increase_count ) items_rendered++;
     }
     
     if( items_rendered > 0 ) play_notification_sound('question2');
@@ -133,6 +145,19 @@ function mark_nwm_item_as_read(trigger, callback)
     $item.block(blockUI_medium_params);
     $.getJSON(nwm_gmarker_script, {item_id: id}, function(data)
     {
+        if( data.message === '@KEEP_IN_COOKIE' )
+        {
+            $.cookie("nmw_item_read_" + id, '1', {path: '/', expires: 365});
+            $item.toggleClass('read', true);
+            unread_count--;
+            $count.text(unread_count);
+            
+            if( typeof callback !== 'undefined' ) callback();
+            else                                  show_hide_miniwall_widget();
+            
+            return;
+        }
+        
         if( data.message !== 'OK' )
         {
             $item.unblock();

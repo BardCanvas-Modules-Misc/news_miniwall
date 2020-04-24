@@ -105,7 +105,7 @@ if( $is_rauth_client )
     {
         die(
             (empty($_GET["callback"]) ? "" : "{$_GET["callback"]}(") .
-            json_encode(array("message" => trim($current_module->language->messages->calls->not_for_locals))) .
+            json_encode(array("message" => "@KEEP_IN_COOKIE"))   .
             (empty($_GET["callback"]) ? "" : ")")
         );
     }
