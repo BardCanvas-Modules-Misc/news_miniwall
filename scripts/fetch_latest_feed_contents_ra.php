@@ -17,6 +17,7 @@
  * @return string json object {message:string, data:array}
  */
 
+use hng2_base\account;
 use hng2_modules\news_miniwall\news_miniwall_repository;
 use hng2_modules\rauth_server\toolbox;
 
@@ -131,6 +132,15 @@ if( ! empty($account_id) )
             where ri.account_id = '{$account_id}'
         )
     ";
+    
+    $account = new account($account_id);
+    if( $account->_exists )
+    {
+        $boundary = date("Y-m-d H:i:s", strtotime("$account->creation_date - 1 day"));
+        $hard_one = date("Y-m-d H:i:s", strtotime("today - 3 days"));
+        if( $boundary < $hard_one ) $boundary = date("Y-m-d H:i:s", strtotime("today - 1 day"));
+        $filter[] = "date_fetched >= '$boundary'";
+    }
 }
 else
 {

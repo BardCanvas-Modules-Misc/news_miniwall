@@ -168,6 +168,11 @@ if( $account->_exists )
             where ri.account_id = '{$account->id_account}'
         )
     ";
+    
+    $boundary = date("Y-m-d H:i:s", strtotime("$account->creation_date - 1 day"));
+    $hard_one = date("Y-m-d H:i:s", strtotime("today - 3 days"));
+    if( $boundary < $hard_one ) $boundary = date("Y-m-d H:i:s", strtotime("today - 1 day"));
+    $filter[] = "date_fetched >= '$boundary'";
 }
 else
 {
