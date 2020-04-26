@@ -81,7 +81,7 @@ if( empty($widget_title) ) $widget_title = $this_module->language->widget->title
 
 <!-- News Miniwall elements -->
 
-<link rel="stylesheet" type="text/css" href="<?= $this_module->get_url() ?>/media/styles~v1.0.0-2.css">
+<link rel="stylesheet" type="text/css" href="<?= $this_module->get_url() ?>/media/styles~v1.0.1-1.css">
 
 <? if( $modules["messaging"]->enabled ): ?>
     <style type="text/css">
