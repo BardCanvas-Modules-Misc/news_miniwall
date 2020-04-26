@@ -1,6 +1,10 @@
 
 # News Mini-wall Module Change Log
 
+## [1.0.3] - 2020-04-26
+
+- Added filter to prevent users to get infinite unread items.
+
 ## [1.0.2] - 2020-04-26
 
 - Tuned styles.
