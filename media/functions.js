@@ -233,7 +233,7 @@ function clean_old_version_cookies()
 {
     var cookies = $.cookie();
     for( var i in cookies )
-        if( i.indexOf('new_item_read_') )
+        if( i.indexOf('nmw_item_read_') >= 0 )
             $.removeCookie(i);
 }
 

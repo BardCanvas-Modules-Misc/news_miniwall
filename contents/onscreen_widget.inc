@@ -115,7 +115,7 @@ if( empty($widget_title) ) $widget_title = $this_module->language->widget->title
     var nwm_gfetching          = false;
     var nwm_last_fetched_ts    = '';
 </script>
-<script type="text/javascript" src="<?= $this_module->get_url() ?>/media/functions~v1.0.2-9.js"></script>
+<script type="text/javascript" src="<?= $this_module->get_url() ?>/media/functions~v1.0.3-1.js"></script>
 
 <div id="news_miniwall_widget_container" class="<?= $widget_class ?>" style="display: none">
     <div class="footing">
