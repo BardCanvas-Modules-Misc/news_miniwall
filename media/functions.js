@@ -69,10 +69,13 @@ function render_news_miniwall_items(items)
     var template_markup = $('#news_miniwall_widget_item_template').html();
     var items_rendered  = 0;
     
+    var rids = $.cookie('nvm_read_items');
+    if( ! rids ) rids = []; else rids = rids.split(',');
+    
     for(var i in items)
     {
         var item    = items[i];
-        var item_id = parseInt(item.item_id);
+        var item_id = item.item_id;
         var search  = sprintf('.news_miniwall_widget_item[data-item-id="%s"]', item_id);
         if( $target.find(search).length > 0 ) continue;
         
@@ -104,13 +107,13 @@ function render_news_miniwall_items(items)
         var increase_count = true;
         if( $_CURRENT_USER_ID_ACCOUNT === "" || nvm_is_3p_client )
         {
-            if( $.cookie("nmw_item_read_" + item_id) )
+            if( rids.indexOf(item_id) >= 0 )
             {
                 $forged_item.toggleClass('read', true);
                 increase_count = false;
             }
         }
-        else if( $_CURRENT_USER_ID_ACCOUNT !== "" && $.cookie("nmw_item_read_" + item_id) )
+        else if( $_CURRENT_USER_ID_ACCOUNT !== "" && rids.indexOf(item_id) >= 0 )
         {
             // Case for local accounts on remote auth support
             $forged_item.toggleClass('read', true);
@@ -134,7 +137,7 @@ function mark_nwm_item_as_read(trigger, callback)
     
     if( $_CURRENT_USER_ID_ACCOUNT === "" || nvm_is_3p_client )
     {
-        $.cookie("nmw_item_read_" + id, '1', {path: '/', expires: 365});
+        set_read_id(id);
         $item.toggleClass('read', true);
         unread_count--;
         $count.text(unread_count);
@@ -147,7 +150,7 @@ function mark_nwm_item_as_read(trigger, callback)
     {
         if( data.message === '@KEEP_IN_COOKIE' )
         {
-            $.cookie("nmw_item_read_" + id, '1', {path: '/', expires: 365});
+            set_read_id(id);
             $item.toggleClass('read', true);
             unread_count--;
             $count.text(unread_count);
@@ -217,8 +220,26 @@ function conclude_news_miniwall_multimark()
     start_news_miniwall_fetcher();
 }
 
+function set_read_id(id)
+{
+    var rids = $.cookie("nvm_read_items");
+    if( ! rids ) rids = []; else rids = rids.split(',');
+    
+    rids.push(id);
+    $.cookie("nvm_read_items", rids.join(','), {path: '/', expires: 365, domain: $_COOKIES_DOMAIN});
+}
+
+function clean_old_version_cookies()
+{
+    var cookies = $.cookie();
+    for( var i in cookies )
+        if( i.indexOf('new_item_read_') )
+            $.removeCookie(i);
+}
+
 $(document).ready(function()
 {
+    clean_old_version_cookies();
     fetch_news_miniwall_gfeeds()
     start_news_miniwall_fetcher();
 });
