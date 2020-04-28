@@ -1,6 +1,10 @@
 
 # News Mini-wall Module Change Log
 
+## [1.0.4] - 2020-04-28
+
+- Refactored read ids storing cookies.
+
 ## [1.0.3] - 2020-04-26
 
 - Added filter to prevent users to get infinite unread items.
