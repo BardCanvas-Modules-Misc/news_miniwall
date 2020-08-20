@@ -124,7 +124,7 @@ function render_news_miniwall_items(items)
         if( increase_count ) items_rendered++;
     }
     
-    if( items_rendered > 0 ) play_notification_sound('question2');
+    if( items_rendered > 0 && typeof play_notification_sound === 'function' ) play_notification_sound('question2');
 }
 
 function mark_nwm_item_as_read(trigger, callback)

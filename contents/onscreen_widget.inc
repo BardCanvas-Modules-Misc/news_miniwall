@@ -12,7 +12,7 @@ use hng2_modules\rauth_client\server;
 
 global $account, $settings, $modules;
 
-if( $template->layout == "popup" ) return;
+if( $template->layout == "popup" && $settings->get("modules:news_miniwall.show_in_popups") != "true" ) return;
 
 /**
  * @var bool   $is_rauth_client
@@ -115,7 +115,7 @@ if( empty($widget_title) ) $widget_title = $this_module->language->widget->title
     var nwm_gfetching          = false;
     var nwm_last_fetched_ts    = '';
 </script>
-<script type="text/javascript" src="<?= $this_module->get_url() ?>/media/functions~v1.0.3-1.js"></script>
+<script type="text/javascript" src="<?= $this_module->get_url() ?>/media/functions~v1.0.4-1.js"></script>
 
 <div id="news_miniwall_widget_container" class="<?= $widget_class ?>" style="display: none">
     <div class="footing">

@@ -95,6 +95,15 @@
             <type>code</type>
         </specs>
         
+        <specs key="show_in_popups">
+            <title>Show widget in popup layouts</title>
+            <description><![CDATA[
+                By default, the widget will not be rendered in popups.
+                Enable this option to make it so.
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+        
         <specs is_separator="true">Hub settings</specs>
         
         <specs key="serve_to_rauth_clients" required_modules="rauth_server">
