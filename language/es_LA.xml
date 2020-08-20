@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+    
+    <display_name>Minimuro de noticias</display_name>
+    <icon>fa-rss-square</icon>
+    <description>
+        Provee un pequeño widget que aparece en la parte baja de la pantalla
+        y muestra artículos de fuentes RSS tan pronto como se publiquen.
+    </description>
+    
+    <add_new_source>Añadir nueva fuente</add_new_source>
+    <set>Establecer...</set>
+    <remove>Remover</remove>
+    
+    <form_fields>
+        <title>
+            <caption>Título:</caption>
+            <placeholder>Escribe un título para la fuente</placeholder>
+        </title>
+        <url>
+            <caption>URL:</caption>
+        </url>
+        <icon>
+            <caption>Icono:</caption>
+        </icon>
+    </form_fields>
+    
+    <widget>
+        <title>Fuente global de notas</title>
+        <mark_all>Marcar todo como leído</mark_all>
+    </widget>
+    
+    <messages>
+        <invalid_item_id>Id de elemento inválida</invalid_item_id>
+        <remote>
+            <error_connecting>Error conectando con %s: %s.</error_connecting>
+            <empty_response>Error markando item en %s: respuesta vacía.</empty_response>
+            <invalid_response>Respuesta de API inválida de %s: no es un objeto JSON.</invalid_response>
+            <error_received>Error recibido de %s: %s.</error_received>
+        </remote>
+        <calls>
+            <not_allowed>Método no permitido para la configuración actual.</not_allowed>
+            <not_for_locals>El método no está permitido para cuentas locales.</not_for_locals>
+            <service_disabled>El minimuro remoto está desactivado.</service_disabled>
+            <no_account>No se ha proporcionado una id de cuenta.</no_account>
+            <invalid_account>La cuenta proporcionada es inválida.</invalid_account>
+            <account_not_found>La cuenta proporcionada no se encuentra en este servidor.</account_not_found>
+            <item_not_found>El item proporcionado no se ha encontrado en este servidor.</item_not_found>
+            <host_missing>No se ha proporcionado el host.</host_missing>
+            <passphrase_missing>No se ha proporcionado la frase de seguridad.</passphrase_missing>
+            <host_not_found>El host llamante no se ha encontrado en este servidor.</host_not_found>
+            <passphrase_mismatch>La frase de seguridad proporcionada no coincide con la registrada para este cliente.</passphrase_mismatch>
+            <invalid_timestamp>Timestamp inicial inválida.</invalid_timestamp>
+        </calls>
+    </messages>
+    
+    <error_notification><![CDATA[
+        Advertencia: no se puuede obtener la fuente "{$name}": está mal formada!
+        Favor de checar la fuente manualmente y deshabilitarla
+        hasta que se resuelva el problema.
+    ]]></error_notification>
+    
+    <settings_data>
+        <title>Minimuro de noticias</title>
+        
+        <specs key="widget_title">
+            <title>Título del widget</title>
+            <description><![CDATA[
+                Escribe un título para el widget.
+                Si lo omites, se usará uno predeterminado.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        
+        <!--
+        Value format:
+        ┌─────────────────────────────────┐
+        │ title → url → icon_path → state │
+        └─────────────────────────────────┘
+        -->
+        <specs key="rss_sources">
+            <title>Fuentes RSS</title>
+            <description><![CDATA[
+                Usa los controles para definir tus fuentes RSS
+            ]]></description>
+            <type>@news_miniwall:specs_renderer/news_miniwall_control</type>
+        </specs>
+        
+        <specs key="last_pull_times" highlight_class="sensitive">
+            <title><![CDATA[ <i class="fa fa-warning"></i> Últimas descargas ]]></title>
+            <description><![CDATA[
+                Esta variable contiene las últimas fechas de descarga de las fuentes.
+                No la edites a menos que sea estrictamente necesario.
+            ]]></description>
+            <type>code</type>
+        </specs>
+        
+        <specs key="show_in_popups">
+            <title>Mostrar widget en popups</title>
+            <description><![CDATA[
+                De forma predeterminada, el widget no se mostrará en popups.
+                Activa esta opción para permitirlo.
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+        
+        <specs is_separator="true">Configuración de anillo</specs>
+        
+        <specs key="serve_to_rauth_clients" required_modules="rauth_server">
+            <title>Servir a clientes de Autenticación Remota?</title>
+            <description><![CDATA[
+                <span class="greengo">El Servidor de Autenticación Remota está presente en este sistema.</span>
+                Puedes permitir el acceso a tu minimuro a clientes remotos.
+                <span class="pseudo_link"
+                      title="Toggle full information"
+                      onclick="toggle_info_section('news_miniwall_rauths_info')"><i
+                      class="fa fa-info-circle"></i> Detalles</span>
+                
+                <div id="news_miniwall_rauths_info" class="info_handler" style="display: none">
+                    <br>
+                    Si deseas que los clientes de este sistema muestren el widget con contenidos
+                    servidos desde este sitio web, necesitas:
+                    <ol>
+                        <li>
+                            Habilitar esta opción y guardar cambios.
+                        </li>
+                        <li>
+                            Instalar el módulo de Minimuro en cada cliente, entonces
+                        </li>
+                        <li>
+                            Editar las opciones del módulo en cada cliente y, en lugar de especificar
+                            fuentes, habilitar el modo cliente.
+                        </li>
+                    </ol>
+                    El rastreo de banderas de lectura para usuarios registrados será posible dado
+                    que las bases de datos se sincronizarán entre el servidor y los clientes.
+                </div>
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
+        
+        <specs key="read_from_rauth_server" required_modules="rauth_client">
+            <title>Actuar como cliente de un Servidor de Autenticación Remota?</title>
+            <description><![CDATA[
+                <span class="greengo">El módulo Cliente de Autenticación Remota está activo en este sistema.</span>
+                Si el servidor tiene instalado el módulo de Miniwall, puedes obtener el contenido de forma remota.
+                <span class="pseudo_link"
+                      title="Toggle full information"
+                      onclick="toggle_info_section('news_miniwall_rauthc_info')"><i
+                      class="fa fa-info-circle"></i> Detalles</span>
+                
+                <div id="news_miniwall_rauthc_info" class="info_handler" style="display: none">
+                    <br>
+                    Si deseas que este sitio web descargue los contenidos del minimuro desde el servidor remoto,
+                    sólo necesitas es solicitar al admin remoto que lo habilite y deberás habilitar esta opción aquí.
+                    <br><br>
+                    <span class="critical">
+                        <i class="fa fa-warning"></i> <b>Advertencia:</b> deja esta opción desactivada
+                        si vas a definir tus propias fuentes RSS.
+                    </span>
+                </div>
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
+        
+        <specs key="read_from_server">
+            <title>Importar de servidor remoto</title>
+            <description><![CDATA[
+                Si, en vez de definir tus propias fuentes RSS o importar un minimuro del Servidor de Autenticación Remota,
+                deseas mostrar el minimuro de un sitio tercero, solicítale al administrador una frase de seguridad
+                y especifícala aquí usando la siguiente sintaxis:
+                
+                <pre>https://dominio.com - frase</pre>
+                
+                <span class="critical">
+                    <i class="fa fa-warning"></i> <b>Advertencia:</b>
+                    no uses esta configuración si has definido fuentes RSS o vas a usar
+                    la configuración del Servidor o Cliente de Autenticación Remota.
+                </span>
+            ]]></description>
+            <type>text</type>
+        </specs>
+        
+        <!--
+        Value format:
+        ┌───────────────────────┐
+        │ hostname - passphrase │
+        └───────────────────────┘
+        -->
+        <specs key="third_party_clients">
+            <title>Exportar a terceros</title>
+            <description><![CDATA[
+                Si deseas que otros sitios web accesen a tu minimuro,
+                puedes especificar la lista aquí.
+                <span class="pseudo_link"
+                      title="Toggle full information"
+                      onclick="toggle_info_section('news_miniwall_tpc_info')"><i
+                      class="fa fa-info-circle"></i> Detalles</span>
+                
+                <div id="news_miniwall_tpc_info" class="info_handler" style="display: none">
+                    <br>
+                    <span class="critical">
+                        <i class="fa fa-warning"></i> <b>Advertencia:</b> no uses esta opción
+                        a menos que definas fuentes RSS. Si defines tu sitio web como cliente
+                        de un miniwall externo, el widget no funcionará en los clientes
+                        que definas aquí.
+                    </span><br><br>
+                    
+                    Sitios web terceros pueden instalar el módulo de Minimuro y ponerlo
+                    como cliente de tu minimuro. Para lograrlo,
+                    necesitas crear una frase de seguridad (una cadena con letras y números aleatorios)
+                    para cada sitio cliente, una por línea, usando la siguiente sintaxis:
+                    
+                    <pre>host - frase</pre>
+                    Examples:
+                    <pre>bardcanvas.com            - X66fy5L9SZAUQH9a
+subspace.club             - eQM6GRWVnAkGtdPt
+spaceescalator.club       - gDAX7DvTDy6LUNmU
+
+# Para subdominios, el dominio va al final: 
+subdomain1.somedomain.com - aQkMP3my8uX68dhE
+subdomain2.somedomain.com - k9fTBXgsahneYsX5
+somedomain.com            - AbPtzTL7UjTxzzT2</pre>
+                    <b>Notas:</b>
+                    <ul>
+                        <li>
+                            El widget jalará la fuente en modo anónimo.
+                            No se podrá llevar un seguimiento de banderas de lectura.
+                        </li>
+                        <li>
+                            La comparación de nombre de host se hará en el orden en el que
+                            se han introducido. Si planeas permitir acceso a subdominios,
+                            deberás escribir los subdominios <b>antes</b> del dominio
+                            como se muestra en el ejemplo anterior.
+                        </li>
+                        <li>
+                            Necesitarás decirle a tus clientes que instalen el módulo de Minimuro
+                            y lo configuren como cliente en la configuración,
+                            especificando la URL de tu sitio web y la frase asignada a ellos.
+                        </li>
+                        <li>
+                            Para desactivar el acceso a un host o añadir comentarios,
+                            añade una almohadilla (<code>#</code>) al inicio de cada línea.
+                        </li>
+                        <li>
+                            Cualquier host desactivado será manejado de forma silenciosa del lado cliente.
+                        </li>
+                    </ul>
+                </div>
+            ]]></description>
+            <type>code</type>
+        </specs>
+        
+    </settings_data>
+    
+</language>
