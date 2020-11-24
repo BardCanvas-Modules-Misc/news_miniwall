@@ -81,7 +81,7 @@ if( empty($widget_title) ) $widget_title = $this_module->language->widget->title
 
 <!-- News Miniwall elements -->
 
-<link rel="stylesheet" type="text/css" href="<?= $this_module->get_url() ?>/media/styles~v1.0.1-1.css">
+<link rel="stylesheet" type="text/css" href="<?= $this_module->get_url() ?>/media/styles~v1.0.2-1.css">
 
 <? if( $modules["messaging"]->enabled ): ?>
     <style type="text/css">
@@ -115,7 +115,7 @@ if( empty($widget_title) ) $widget_title = $this_module->language->widget->title
     var nwm_gfetching          = false;
     var nwm_last_fetched_ts    = '';
 </script>
-<script type="text/javascript" src="<?= $this_module->get_url() ?>/media/functions~v1.0.4-1.js"></script>
+<script type="text/javascript" src="<?= $this_module->get_url() ?>/media/functions~v1.0.5-1.js"></script>
 
 <div id="news_miniwall_widget_container" class="<?= $widget_class ?>" style="display: none">
     <div class="footing">

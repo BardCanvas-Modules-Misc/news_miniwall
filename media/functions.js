@@ -187,11 +187,13 @@ function show_hide_miniwall_widget()
     {
         $container.find('.mark_all').hide();
         $container.hide('slide', {direction: 'down'});
+        $('body').toggleClass('with_nmw_widget', false);
     }
     else
     {
         $container.find('.mark_all').show();
         $container.show('slide', {direction: 'down'});
+        $('body').toggleClass('with_nmw_widget', true);
     }
 }
 
