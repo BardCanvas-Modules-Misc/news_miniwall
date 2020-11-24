@@ -54,11 +54,30 @@
         </calls>
     </messages>
     
+    <disable_title>Disable this widget</disable_title>
+    <disable_prompt><![CDATA[
+        Are you sure you want to disable the news miniwall?
+        <br><br>
+        Tip: you can enable it from the account prefs page.
+    ]]></disable_prompt>
+    
     <error_notification><![CDATA[
         Warning: cannot fetch feed "{$name}": it is malformed!
         Please check the source manually and disable it
         until the issue is resolved.
     ]]></error_notification>
+    
+    <engine_prefs>
+        <title>News miniwall</title>
+        
+        <specs key="enabled" selector_default="true">
+            <title>Enable news miniwall</title>
+            <description><![CDATA[
+                Toggle this switch to enable/disable the news miniwall widget.
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+    </engine_prefs>
     
     <settings_data>
         <title>News miniwall</title>
@@ -102,6 +121,15 @@
                 Enable this option to make it so.
             ]]></description>
             <type>boolean</type>
+        </specs>
+        
+        <specs key="disabling_level">
+            <title>Users that can disable it</title>
+            <description><![CDATA[
+                Specify the user level that can disable the widget.
+                Default: <code>0</code> - everyone can disable it.
+            ]]></description>
+            <type>number</type>
         </specs>
         
         <specs is_separator="true">Hub settings</specs>

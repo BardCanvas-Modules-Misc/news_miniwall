@@ -239,6 +239,40 @@ function clean_old_version_cookies()
             $.removeCookie(i);
 }
 
+function show_nmw_disable_prompt()
+{
+    var $dialog = $('#news_miniwall_hiding_prompt');
+    if( $dialog.length === 0 ) return;
+    
+    $dialog.dialog({
+        modal:    true,
+        close:    function() { $(this).dialog('destroy'); },
+        buttons:  [
+            {
+                text:  $dialog.attr('data-ok-caption'),
+                icons: { primary: "ui-icon-check" },
+                click: function() {
+                    var $dialog    = $('#news_miniwall_hiding_prompt');
+                    var $container = $('#news_miniwall_widget_container');
+                    $dialog.closest('.ui-dialog').block(blockUI_medium_params);
+                    set_engine_pref('@news_miniwall:enabled', 'false', function() {
+                        stop_news_miniwall_fetcher();
+                        $container.find('.mark_all').hide();
+                        $container.hide('slide', {direction: 'down'});
+                        $('body').toggleClass('with_nmw_widget', false);
+                        $dialog.closest('.ui-dialog').unblock();
+                        $dialog.dialog('close');
+                    })
+                }
+            }, {
+                text:  $dialog.attr('data-cancel-caption'),
+                icons: { primary: "ui-icon-cancel" },
+                click: function() { $(this).dialog('close'); }
+            }
+        ]
+    })
+}
+
 $(document).ready(function()
 {
     clean_old_version_cookies();

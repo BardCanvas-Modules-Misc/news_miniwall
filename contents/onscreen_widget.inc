@@ -14,6 +14,8 @@ global $account, $settings, $modules;
 
 if( $template->layout == "popup" && $settings->get("modules:news_miniwall.show_in_popups") != "true" ) return;
 
+if( $account->_exists && $account->engine_prefs["@news_miniwall:enabled"] == "false" ) return;
+
 /**
  * @var bool   $is_rauth_client
  * @var bool   $is_3p_client
@@ -77,11 +79,13 @@ elseif( ! $account->_exists && $_COOKIE["nmw_widget_collapsed"] == "true" ) $wid
 
 $widget_title = $settings->get("modules:news_miniwall.widget_title");
 if( empty($widget_title) ) $widget_title = $this_module->language->widget->title;
+
+$can_disable = $account->level >= (int) $settings->get("modules:news_miniwall.disabling_level");
 ?>
 
 <!-- News Miniwall elements -->
 
-<link rel="stylesheet" type="text/css" href="<?= $this_module->get_url() ?>/media/styles~v1.0.2-1.css">
+<link rel="stylesheet" type="text/css" href="<?= $this_module->get_url() ?>/media/styles~v1.0.3-2.css">
 
 <? if( $modules["messaging"]->enabled ): ?>
     <style type="text/css">
@@ -115,7 +119,7 @@ if( empty($widget_title) ) $widget_title = $this_module->language->widget->title
     var nwm_gfetching          = false;
     var nwm_last_fetched_ts    = '';
 </script>
-<script type="text/javascript" src="<?= $this_module->get_url() ?>/media/functions~v1.0.5-1.js"></script>
+<script type="text/javascript" src="<?= $this_module->get_url() ?>/media/functions~v1.0.6-7.js"></script>
 
 <div id="news_miniwall_widget_container" class="<?= $widget_class ?>" style="display: none">
     <div class="footing">
@@ -124,6 +128,12 @@ if( empty($widget_title) ) $widget_title = $this_module->language->widget->title
     </div>
     <div class="items"></div>
     <div class="title" onclick="toggle_news_miniwall_widget()">
+        <? if($can_disable): ?>
+            <span class="disable_icon pull-right" style="margin-left: 5px;">
+                <i class="fa fa-ban fa-fw" title="<?= $this_module->language->disable_title ?>"
+                   onclick="event.stopPropagation(); show_nmw_disable_prompt()"></i>
+            </span>
+        <? endif; ?>
         <span class="nwm_widget_toggle">
             <i class="widget_collapsed fa fa-chevron-right fa-fw"></i>
             <i class="widget_expanded  fa fa-chevron-up    fa-fw"></i>
@@ -132,6 +142,13 @@ if( empty($widget_title) ) $widget_title = $this_module->language->widget->title
         <span class="count">0</span>
     </div>
 </div>
+
+<? if($can_disable): ?>
+    <div id="news_miniwall_hiding_prompt" style="display: none" title="<?= $this_module->language->disable_title ?>"
+         data-ok-caption="<?= $language->ok ?>" data-cancel-caption="<?= $language->cancel ?>">
+        <?= $this_module->language->disable_prompt ?>
+    </div>
+<? endif; ?>
 
 <template id="news_miniwall_widget_item_template">
     <div class="news_miniwall_widget_item" data-item-id="{$item_id}">

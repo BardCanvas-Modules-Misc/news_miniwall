@@ -54,11 +54,30 @@
         </calls>
     </messages>
     
+    <disable_title>Desactivar este widget</disable_title>
+    <disable_prompt><![CDATA[
+        Deseas desactivar el minimuro de noticias?
+        <br><br>
+        Tip: puedes reactivarlo en las preferencias.
+    ]]></disable_prompt>
+    
     <error_notification><![CDATA[
         Advertencia: no se puuede obtener la fuente "{$name}": está mal formada!
         Favor de checar la fuente manualmente y deshabilitarla
         hasta que se resuelva el problema.
     ]]></error_notification>
+    
+    <engine_prefs>
+        <title>Minimuro de noticias</title>
+        
+        <specs key="enabled" selector_default="true">
+            <title>Habilitar minimuro de noticias</title>
+            <description><![CDATA[
+                Usa este switch para activar/desactivar el widget.
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+    </engine_prefs>
     
     <settings_data>
         <title>Minimuro de noticias</title>
@@ -102,6 +121,15 @@
                 Activa esta opción para permitirlo.
             ]]></description>
             <type>boolean</type>
+        </specs>
+        
+        <specs key="disabling_level">
+            <title>Usuarios que pueden deshabilitarlo</title>
+            <description><![CDATA[
+                Especifica el nivel de usuario que puede desactivar el widget.
+                Valor predeterminado: <code>0</code> - cualquiera puede desactivarlo.
+            ]]></description>
+            <type>number</type>
         </specs>
         
         <specs is_separator="true">Configuración de anillo</specs>

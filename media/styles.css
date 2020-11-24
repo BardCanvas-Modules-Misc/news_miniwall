@@ -99,3 +99,6 @@ body[data-is-known-user="true"] .news_miniwall_widget_item.read { display: none;
 body.popup.with_nmw_widget   ,
 body.admin.with_nmw_widget   ,
 body.with_nmw_widget #footer { padding-bottom: 35px; }
+
+#news_miniwall_widget_container .disable_icon       { cursor: pointer; }
+#news_miniwall_widget_container .disable_icon:hover { color: yellow; }

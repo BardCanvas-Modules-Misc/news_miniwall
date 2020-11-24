@@ -22,6 +22,7 @@
     </working_flags>
     
     <template_includes>
+        <pre_rendering>prefs_page.inc</pre_rendering>
         <post_footer>onscreen_widget.inc</post_footer>
     </template_includes>
     
