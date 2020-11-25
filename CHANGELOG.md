@@ -1,6 +1,11 @@
 
 # News Mini-wall Module Change Log
 
+## [1.2.0] - 2020-11-25
+
+- Added bottom margin when the widget is visible to avoid overlapping controls.
+- Added disabling capability.
+
 ## [1.1.0] - 2020-08-19
 
 - Added option to show the widget on popup layouts.
