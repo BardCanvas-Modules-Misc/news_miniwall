@@ -80,7 +80,7 @@ elseif( ! $account->_exists && $_COOKIE["nmw_widget_collapsed"] == "true" ) $wid
 $widget_title = $settings->get("modules:news_miniwall.widget_title");
 if( empty($widget_title) ) $widget_title = $this_module->language->widget->title;
 
-$can_disable = $account->level >= (int) $settings->get("modules:news_miniwall.disabling_level");
+$can_disable = $account->_exists && $account->level >= (int) $settings->get("modules:news_miniwall.disabling_level");
 ?>
 
 <!-- News Miniwall elements -->
