@@ -1,6 +1,10 @@
 
 # News Mini-wall Module Change Log
 
+## [1.2.1] - 2021-01-14
+
+- Added missing check to disable the widget.
+
 ## [1.2.0] - 2020-11-25
 
 - Added bottom margin when the widget is visible to avoid overlapping controls.
