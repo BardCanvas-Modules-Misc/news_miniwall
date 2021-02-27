@@ -1,6 +1,10 @@
 
 # News Mini-wall Module Change Log
 
+## [1.2.2] - 2021-02-27
+
+- Added check on the CLI monitor to avoid empty notifications if the module is disabled.
+
 ## [1.2.1] - 2021-01-14
 
 - Added missing check to disable the widget.
