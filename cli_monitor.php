@@ -21,6 +21,8 @@ include "../includes/bootstrap.inc";
 include "../includes/self_running_checker.inc";
 set_time_limit(300);
 
+if( ! $modules["news_miniwall"]->enabled ) die();
+
 $current_module = $modules["news_miniwall"];
 
 #region Prechecks
@@ -159,9 +161,10 @@ foreach( $feed_sources as $feed_name => $feed_data )
             "<yellow>Notifying and skipping it.</yellow>\n\n"
         );
         
-        broadcast_to_moderators("error", replace_escaped_objects($current_module->language->error_notification, array(
-            '{$name}' => $feed_name
-        )));
+        broadcast_to_moderators("error", replace_escaped_objects(
+            $current_module->language->error_notification,
+            array('{$name}' => $feed_name)
+        ));
         
         continue;
     }
